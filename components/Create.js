@@ -1,22 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useProfile } from '@farcaster/auth-kit';
+import { useState } from 'react';
 
 export default function Create() {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    price: ''
+    name: '',
+    company: '',
+    phone: '',
+    email: '',
+    location: ''
   });
-  const { isAuthenticated, userData } = useProfile();
-
-  useEffect(() => {
-    // This will log user information to the console if authenticated
-    if (isAuthenticated && userData) {
-      console.log('Authenticated User:', { username: userData.username, fid: userData.fid });
-    } else {
-      console.log('User is not authenticated.');
-    }
-  }, [isAuthenticated, userData]);
 
   const handleChange = (e) => {
     setFormData({
@@ -27,63 +18,75 @@ export default function Create() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!isAuthenticated) {
-      alert('Please sign in to submit an entry.');
-      return;
-    }
-    // Since userData may be null, guard against it by providing an empty object
-    const { username, fid } = userData || {};
 
-    const dataWithUser = {
-      ...formData,
-      user: { username, fid }
-    };
+    console.log('Sending data:', formData);
 
-    console.log('Sending data:', dataWithUser);
-
-    const response = await fetch('/api/log', {
+    const response = await fetch('/api/open', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dataWithUser),
+      body: JSON.stringify(formData),
     });
     const data = await response.json();
     console.log(data);
     setFormData({
-      title: '',
-      description: '',
-      price: ''
+      name: '',
+      company: '',
+      phone: '',
+      email: '',
+      location: ''
     });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
         <input
           type="text"
-          name="title"
-          value={formData.title}
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-      <div>
-        <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
+        <label htmlFor="company" className="block text-sm font-medium text-gray-700">Company</label>
         <input
-          type="number"
-          name="price"
-          value={formData.price}
+          type="text"
+          name="company"
+          value={formData.company}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+      <div>
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+        <input
+          type="text"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+      <div>
+        <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
+        <input
+          type="text"
+          name="location"
+          value={formData.location}
           onChange={handleChange}
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         />
