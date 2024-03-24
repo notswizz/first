@@ -18,9 +18,9 @@ export default function DisplayEntries() {
       <ul>
         {entries.map((entry, index) => (
           <li key={index} className="border-b border-gray-200 py-2">
-            <h3 className="text-xl font-semibold">{entry.title}</h3>
+            <h3 className="text-xl font-semibold">{entry.name}</h3>
             <p>{entry.description}</p>
-            <p className="text-gray-600">Price: ${entry.price}</p>
+            <p className="text-gray-600">Price: ${entry.email}</p>
           </li>
         ))}
       </ul>
